@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#f85606">
+<meta name="description" content="MADHAN SHOP online shopping website preview">
+<meta name="robots" content="noindex">
+<title>MADHAN SHOP</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f6f8;color:#222}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.top{height:62px;background:#f85606;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px;position:sticky;top:0;z-index:20}
+.brand{font-size:22px;font-weight:800}.hamb{display:none;background:none;border:0;color:#fff;font-size:25px}
+.layout{display:flex;min-height:calc(100vh - 62px)}.side{width:235px;background:#17191d;color:#fff;padding:15px;flex-shrink:0}
+.side button{display:block;width:100%;padding:12px;margin:5px 0;background:transparent;border:0;color:#ddd;text-align:left;border-radius:7px}
+.side button:hover,.side button.active{background:#f85606;color:#fff}.main{flex:1;padding:18px;max-width:1450px;margin:auto;width:100%}
+.page{display:none}.page.active{display:block}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.stat,.panel,.product,.shopcard{background:#fff;border-radius:10px;padding:15px;box-shadow:0 2px 8px #0001}
+.stat b{display:block;font-size:25px;margin-top:7px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #d4d4d4;border-radius:7px;margin:5px 0 12px}
+label{font-weight:bold;font-size:14px}.btn{border:0;padding:10px 14px;border-radius:7px;background:#f85606;color:#fff;margin:3px}
+.green{background:#0a9f58}.red{background:#d93025}.blue{background:#0878d1}.dark{background:#555}.search{max-width:520px}
+.tablewrap{overflow:auto}.tablewrap table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:10px;border-bottom:1px solid #eee;text-align:left;white-space:nowrap}
+.product img,.shopcard img{width:100%;height:180px;object-fit:cover;border-radius:7px}.price{color:#f85606;font-size:19px;font-weight:bold}
+.shopgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}.inside{padding:2px}
+.badge{display:inline-block;padding:4px 8px;border-radius:12px;background:#eee;font-size:12px}.pending{background:#fff0c2}.accepted{background:#d9f7df}.rejected{background:#ffd9d9}
+#gate{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5f6f8;padding:18px}
+.box{width:100%;max-width:410px;background:#fff;padding:28px;border-radius:14px;box-shadow:0 4px 20px #0002;text-align:center}
+.google{width:100%;background:#fff;border:1px solid #bbb;color:#222;padding:12px;border-radius:7px;margin-top:8px}
+.customer-login{display:none}.customer-login.show{display:block}.notice{background:#fff4e8;border:1px solid #ffd2ad;padding:10px;border-radius:7px;font-size:13px;margin-top:12px}
+.small{font-size:12px;color:#777}.modalbg{display:none;position:fixed;inset:0;background:#0008;z-index:50;align-items:center;justify-content:center;padding:15px}.modal{background:#fff;max-width:520px;width:100%;padding:20px;border-radius:12px;max-height:90vh;overflow:auto}
+@media(max-width:700px){.hamb{display:block}.side{position:fixed;left:-245px;top:62px;height:calc(100vh - 62px);z-index:30;transition:.2s}.side.open{left:0}.main{padding:12px}}
+</style>
+</head>
+<body>
+
+<!-- FIRST SCREEN: CUSTOMER / ADMIN GATE -->
+<div id="gate">
+  <div class="box">
+    <div class="brand" style="color:#f85606">🛒 MADHAN SHOP</div>
+    <div class="notice" style="text-align:left;margin-bottom:14px"><b>Publish-ready preview</b><br>This front-end works on static hosting. For real multi-device orders, payments, image uploads, and secure admin authentication, connect a backend/database.</div><h2>Welcome</h2>
+    <button class="btn green" style="width:100%" onclick="showCustomerLogin()">👤 Customer Login</button>
+    <div style="margin:15px;color:#888">OR</div>
+    <button class="btn dark" style="width:100%" onclick="showAdminLogin()">🔐 Admin Login</button>
+
+    <div id="customerLogin" class="customer-login">
+      <hr><h3>Customer Login</h3>
+      <input id="customerPhone" type="tel" inputmode="numeric" placeholder="Phone Number">
+      <button class="btn green" style="width:100%" onclick="customerEnter()">Continue</button>
+      <p class="small">Phone number மட்டும் வைத்து demo customer access.</p>
+      <button class="btn dark" onclick="backGate()">Back</button>
+    </div>
+
+    <div id="adminLogin" class="customer-login">
+      <hr><h3>Admin Login</h3>
+      <input id="adminPassword" type="password" placeholder="Password">
+      <input id="adminPin" type="password" inputmode="numeric" placeholder="PIN">
+      <button class="btn" style="width:100%" onclick="adminEnter()">Login</button>
+      <div class="notice">Google Sign-In requires your own Google OAuth Client ID and secure backend. This file does not fake Google authentication.</div>
+      <button class="google" onclick="googleConnect()">🔵 Continue with Google</button>
+      <button class="btn dark" onclick="backGate()">Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none">
+<header class="top"><button class="hamb" onclick="toggleSide()">☰</button><div class="brand">🛒 MADHAN SHOP</div><button class="btn dark" onclick="logout()">Logout</button></header>
+<div class="layout">
+<aside class="side" id="side">
+<button class="active" onclick="page('dashboard',this)">📊 Dashboard</button>
+<button onclick="page('products',this)">📦 Products</button><button onclick="page('add',this)">➕ Add Product</button>
+<button onclick="page('orders',this)">🛍️ Orders</button><button onclick="page('reviews',this)">⭐ Reviews</button>
+<button onclick="page('customers',this)">👥 Customers</button><button onclick="page('categories',this)">🗂️ Categories</button>
+<button onclick="page('coupons',this)">🎟️ Coupons</button><button onclick="page('shop',this)">🛒 Shopping Page</button>
+<button onclick="page('settings',this)">⚙️ Settings</button>
+</aside>
+
+<main class="main">
+<section id="dashboard" class="page active"><h2>Dashboard</h2><div class="cards">
+<div class="stat">Products<b id="sProducts">0</b></div><div class="stat">Orders<b id="sOrders">0</b></div>
+<div class="stat">Customers<b id="sCustomers">0</b></div><div class="stat">Pending Orders<b id="sPending">0</b></div>
+</div><div class="panel"><h3>Recent Orders</h3><div id="recentOrders"></div></div></section>
+
+<section id="products" class="page"><h2>Products</h2><div class="panel"><input id="productSearch" class="search" placeholder="Search products..." oninput="renderProducts()"><button class="btn" onclick="page('add')">+ Add Product</button></div><div class="grid" id="productList"></div></section>
+
+<section id="add" class="page"><h2 id="addTitle">Add Product</h2><div class="panel"><input type="hidden" id="editId"><div class="grid">
+<div><label>Product Name *</label><input id="pName"></div><div><label>Image URL</label><input id="pImage"></div>
+<div><label>Category *</label><select id="pCategory"></select></div><div><label>Price *</label><input id="pPrice" type="number" min="0"></div>
+<div><label>Discount Price</label><input id="pDiscount" type="number" min="0"></div><div><label>Stock *</label><input id="pStock" type="number" min="0"></div>
+<div><label>SKU</label><input id="pSku"></div></div><label>Description</label><textarea id="pDescription" rows="5"></textarea>
+<button class="btn green" onclick="saveProduct()">Save Product</button><button class="btn dark" onclick="clearProductForm()">Clear</button></div></section>
+
+<section id="orders" class="page"><h2>Orders</h2><div class="panel tablewrap"><table><thead><tr><th>Order</th><th>Customer</th><th>Phone</th><th>Total</th><th>Payment</th><th>Status</th><th>Action</th></tr></thead><tbody id="orderList"></tbody></table></div></section>
+
+<section id="reviews" class="page"><h2>Product Reviews</h2><div class="panel tablewrap"><table><thead><tr><th>Product</th><th>Name</th><th>Rating</th><th>Review</th><th>Status</th><th>Action</th></tr></thead><tbody id="reviewList"></tbody></table></div></section>
+
+<section id="customers" class="page"><h2>Customers</h2><div class="panel tablewrap"><table><thead><tr><th>Name</th><th>Phone</th><th>Address</th><th>Orders</th></tr></thead><tbody id="customerList"></tbody></table></div></section>
+
+<section id="categories" class="page"><h2>Categories</h2><div class="panel"><input id="newCategory" placeholder="New category"><button class="btn" onclick="addCategory()">Add Category</button></div><div class="grid" id="categoryList"></div></section>
+
+<section id="coupons" class="page"><h2>Coupons</h2><div class="panel grid"><div><label>Coupon Code</label><input id="couponCode"></div><div><label>Discount %</label><input id="couponDiscount" type="number" min="1" max="100"></div><div><label>Expiry</label><input id="couponExpiry" type="date"></div></div><button class="btn green" onclick="addCoupon()">Save Coupon</button><div class="panel" id="couponList"></div></section>
+
+<section id="shop" class="page"><h2>Shopping Page</h2><div class="panel"><input id="shopSearch" class="search" placeholder="Search products..." oninput="renderShop()"><button class="btn" onclick="openCart()">🛒 Cart (<span id="cartCount">0</span>)</button></div><div class="shopgrid" id="shopList"></div><div class="panel"><h3>Orders</h3><div id="myOrders"></div></div></section>
+
+<section id="settings" class="page"><h2>Settings</h2><div class="panel"><label>Shop Name</label><input id="shopName" value="MADHAN SHOP"><label>Currency</label><select id="currency"><option>₹ INR</option><option>LKR</option></select><label>Delivery Charge</label><input id="deliveryCharge" type="number" value="350"><label>Payment</label><select><option>Cash on Delivery (COD) ONLY</option></select><button class="btn green" onclick="saveSettings()">Save Settings</button></div></section>
+</main></div></div><footer style="text-align:center;padding:22px;color:#777;font-size:12px">© 2026 MADHAN SHOP · Website Preview</footer>
+
+<div class="modalbg" id="cartModal"><div class="modal"><h2>🛒 Cart</h2><div id="cartItems"></div><hr><h3 id="cartTotal"></h3><button class="btn green" onclick="checkout()">Checkout - COD</button><button class="btn dark" onclick="closeCart()">Close</button></div></div>
+
+<script>
+const KEY="MADHAN_SHOP_RESET_V2";
+let db=JSON.parse(localStorage.getItem(KEY)||"null")||{products:[
+{id:1,name:"Smartphone",price:45000,discount:0,stock:10,sku:"PHONE001",category:"Phones",image:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=700",description:"Smartphone"},
+{id:2,name:"Headphones",price:6500,discount:0,stock:20,sku:"HEAD001",category:"Electronics",image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700",description:"Wireless headphones"},
+{id:3,name:"Smart Watch",price:9000,discount:0,stock:15,sku:"WATCH001",category:"Electronics",image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700",description:"Smart watch"}],
+orders:[],reviews:[],customers:[],categories:["Electronics","Phones","Fashion","Home"],coupons:[],cart:[],settings:{shopName:"MADHAN SHOP",currency:"₹",delivery:350}};
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function showCustomerLogin(){adminLogin.style.display="none";customerLogin.style.display="block"}
+function showAdminLogin(){customerLogin.style.display="none";adminLogin.style.display="block"}
+function backGate(){customerLogin.style.display="none";adminLogin.style.display="none"}
+function customerEnter(){let p=customerPhone.value.replace(/\D/g,"");if(p.length<7)return alert("Enter a valid phone number.");localStorage.setItem("MADHAN_CUSTOMER_PHONE",p);gate.style.display="none";app.style.display="block";page("shop");renderAll()}
+function adminEnter(){let password=adminPassword.value,pin=adminPin.value;
+if(password==="admin"&&pin==="2580"){gate.style.display="none";app.style.display="block";renderAll()}
+else alert("Wrong Password or PIN")}
+function googleConnect(){alert("Preview mode: connect Google OAuth and a secure backend before production use.")}
+function logout(){app.style.display="none";gate.style.display="flex";backGate()}
+function toggleSide(){side.classList.toggle("open")}
+function page(id,btn){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".side button").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="products")renderProducts();if(id==="orders")renderOrders();if(id==="reviews")renderReviews();if(id==="customers")renderCustomers();if(id==="categories")renderCategories();if(id==="coupons")renderCoupons();if(id==="shop")renderShop();if(id==="add")populateCategories();side.classList.remove("open")}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function populateCategories(){pCategory.innerHTML=db.categories.map(c=>`<option>${esc(c)}</option>`).join("")}
+function effectivePrice(p){return +p.discount>0?+p.discount:+p.price}
+function saveProduct(){let name=pName.value.trim(),price=+pPrice.value,stock=+pStock.value;if(!name||!price||stock<0)return alert("Product Name, Price and Stock are required.");let id=editId.value?+editId.value:Date.now(),old=db.products.find(x=>x.id===id);let item={id,name,price,discount:+pDiscount.value||0,stock,sku:pSku.value.trim(),category:pCategory.value,image:pImage.value.trim()||"https://via.placeholder.com/700?text=Product",description:pDescription.value.trim()};if(old)Object.assign(old,item);else db.products.push(item);save();clearProductForm();renderAll();page("products");alert(old?"Product updated!":"Product added!")}
+function editProduct(id){let p=db.products.find(x=>x.id===id);if(!p)return;editId.value=p.id;pName.value=p.name;pPrice.value=p.price;pDiscount.value=p.discount;pStock.value=p.stock;pSku.value=p.sku;pImage.value=p.image;pDescription.value=p.description;populateCategories();pCategory.value=p.category;addTitle.textContent="Edit Product";page("add")}
+function deleteProduct(id){if(confirm("Delete this product?")){db.products=db.products.filter(x=>x.id!==id);save();renderAll()}}
+function clearProductForm(){editId.value="";pName.value="";pImage.value="";pPrice.value="";pDiscount.value="";pStock.value="";pSku.value="";pDescription.value="";addTitle.textContent="Add Product";populateCategories()}
+function renderProducts(){let q=(productSearch?.value||"").toLowerCase();productList.innerHTML=db.products.filter(p=>p.name.toLowerCase().includes(q)).map(p=>`<div class="product"><img src="${esc(p.image)}"><h3>${esc(p.name)}</h3><div class="price">${db.settings.currency}${effectivePrice(p).toLocaleString()}</div><p>${esc(p.category)} · Stock ${p.stock}</p><button class="btn blue" onclick="editProduct(${p.id})">Edit</button><button class="btn red" onclick="deleteProduct(${p.id})">Delete</button></div>`).join("")||"<p>No products.</p>"}
+function renderOrders(){orderList.innerHTML=db.orders.map(o=>`<tr><td><b>${esc(o.id)}</b></td><td>${esc(o.name)}</td><td>${esc(o.phone)}</td><td>${db.settings.currency}${o.total.toLocaleString()}</td><td>COD</td><td>${esc(o.status)}</td><td><button class="btn green" onclick="setStatus('${o.id}','Accepted')">Accept</button><button class="btn red" onclick="setStatus('${o.id}','Rejected')">Reject</button></td></tr>`).join("")||"<tr><td colspan='7'>No orders.</td></tr>"}
+function setStatus(id,status){let o=db.orders.find(x=>x.id===id);if(o){o.status=status;save();renderAll()}}
+function renderReviews(){reviewList.innerHTML=db.reviews.map((r,i)=>`<tr><td>${esc(productName(r.productId))}</td><td>${esc(r.name)}</td><td>${"★".repeat(r.rating)}</td><td>${esc(r.text)}</td><td>${r.approved?"Approved":"Pending"}</td><td><button class="btn green" onclick="approveReview(${i})">Approve</button><button class="btn red" onclick="deleteReview(${i})">Delete</button></td></tr>`).join("")||"<tr><td colspan='6'>No reviews.</td></tr>"}
+function productName(id){return db.products.find(p=>p.id==id)?.name||"Deleted Product"}function approveReview(i){db.reviews[i].approved=true;save();renderReviews()}function deleteReview(i){db.reviews.splice(i,1);save();renderReviews()}
+function renderCustomers(){let map={};db.orders.forEach(o=>{map[o.phone]=map[o.phone]||{name:o.name,phone:o.phone,address:o.address,count:0};map[o.phone].count++});customerList.innerHTML=Object.values(map).map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.phone)}</td><td>${esc(c.address)}</td><td>${c.count}</td></tr>`).join("")||"<tr><td colspan='4'>No customers yet.</td></tr>"}
+function addCategory(){let c=newCategory.value.trim();if(c&&!db.categories.includes(c)){db.categories.push(c);save();newCategory.value="";renderCategories();populateCategories()}}function renderCategories(){categoryList.innerHTML=db.categories.map((c,i)=>`<div class="stat"><b style="font-size:18px">${esc(c)}</b><button class="btn red" onclick="removeCategory(${i})">Delete</button></div>`).join("")}function removeCategory(i){if(db.categories.length<=1)return;db.categories.splice(i,1);save();renderCategories();populateCategories()}
+function addCoupon(){let code=couponCode.value.trim().toUpperCase(),d=+couponDiscount.value;if(!code||!d)return alert("Enter coupon and discount.");db.coupons.push({code,discount:d,expiry:couponExpiry.value});save();couponCode.value="";couponDiscount.value="";couponExpiry.value="";renderCoupons()}function renderCoupons(){couponList.innerHTML=db.coupons.map((c,i)=>`<p><b>${esc(c.code)}</b> — ${c.discount}% ${c.expiry?"· "+esc(c.expiry):""} <button class="btn red" onclick="db.coupons.splice(${i},1);save();renderCoupons()">Delete</button></p>`).join("")||"<p>No coupons.</p>"}
+function saveSettings(){db.settings.shopName=shopName.value||"MADHAN SHOP";db.settings.currency=currency.value.includes("LKR")?"LKR ":"₹";db.settings.delivery=+deliveryCharge.value||0;save();renderAll();alert("Settings saved")}
+function renderShop(){let q=(shopSearch?.value||"").toLowerCase();shopList.innerHTML=db.products.filter(p=>p.name.toLowerCase().includes(q)&&p.stock>0).map(p=>`<div class="shopcard"><img src="${esc(p.image)}"><div class="inside"><h3>${esc(p.name)}</h3><div class="price">${db.settings.currency}${effectivePrice(p).toLocaleString()}</div><p>${esc(p.category)}</p><button class="btn" onclick="addCart(${p.id})">Add Cart</button><button class="btn green" onclick="buyNow(${p.id})">Order Now</button><hr><input id="rv${p.id}" placeholder="Write a review"><select id="rt${p.id}"><option value="5">★★★★★</option><option value="4">★★★★</option><option value="3">★★★</option><option value="2">★★</option><option value="1">★</option></select><button class="btn blue" onclick="review(${p.id})">Review</button></div></div>`).join("")||"<p>No products found.</p>";cartCount.textContent=db.cart.reduce((s,x)=>s+x.q,0);renderMyOrders()}
+function addCart(id){let p=db.products.find(x=>x.id===id),x=db.cart.find(a=>a.id===id);if(!p||p.stock<=0)return;if(x){if(x.q>=p.stock)return alert("Maximum stock reached");x.q++}else db.cart.push({id,q:1});save();renderShop()}function buyNow(id){db.cart=[{id,q:1}];save();openCart()}
+function openCart(){renderCart();cartModal.style.display="flex"}function closeCart(){cartModal.style.display="none"}function removeCart(id){db.cart=db.cart.filter(x=>x.id!==id);save();renderCart();renderShop()}
+function renderCart(){let total=0;cartItems.innerHTML=db.cart.map(x=>{let p=db.products.find(a=>a.id===x.id);if(!p)return "";let t=effectivePrice(p)*x.q;total+=t;return `<p><b>${esc(p.name)}</b> × ${x.q} = ${db.settings.currency}${t.toLocaleString()} <button class="btn red" onclick="removeCart(${p.id})">Remove</button></p>`}).join("")||"<p>Cart is empty.</p>";cartTotal.textContent="Total: "+db.settings.currency+(total+db.settings.delivery).toLocaleString()+" (Delivery "+db.settings.currency+db.settings.delivery+")"}
+function checkout(){if(!db.cart.length)return alert("Cart is empty.");let name=prompt("Customer Name"),phone=prompt("Phone",localStorage.getItem("MADHAN_CUSTOMER_PHONE")||""),address=prompt("Full Delivery Address");if(!name||!phone||!address)return;let subtotal=0;for(let x of db.cart){let p=db.products.find(a=>a.id===x.id);if(!p||p.stock<x.q)return alert("Stock unavailable");subtotal+=effectivePrice(p)*x.q}let total=subtotal+db.settings.delivery,id="ORD-"+(1000+db.orders.length+1);db.cart.forEach(x=>db.products.find(a=>a.id===x.id).stock-=x.q);db.orders.push({id,name,phone,address,items:db.cart,total,status:"Pending",created:new Date().toLocaleString()});let c=db.customers.find(x=>x.phone===phone);if(c)c.orders++;else db.customers.push({name,phone,address,orders:1});db.cart=[];save();closeCart();renderAll();alert("Order placed: "+id)}
+function review(id){let text=document.getElementById("rv"+id).value.trim(),rating=+document.getElementById("rt"+id).value;if(!text)return;let name=prompt("Your name");if(!name)return;db.reviews.push({productId:id,name,text,rating,approved:false});save();renderShop();alert("Review submitted for admin approval.")}
+function renderMyOrders(){myOrders.innerHTML=db.orders.length?db.orders.map(o=>`<div class="panel"><b>${esc(o.id)}</b><p>${esc(o.name)} · ${esc(o.phone)}</p><p>Total: ${db.settings.currency}${o.total.toLocaleString()} · COD</p><b>${esc(o.status)}</b></div>`).join(""):"<p class='small'>No orders.</p>"}
+function renderAll(){sProducts.textContent=db.products.length;sOrders.textContent=db.orders.length;sCustomers.textContent=db.customers.length;sPending.textContent=db.orders.filter(o=>o.status==="Pending").length;recentOrders.innerHTML=db.orders.slice(-5).reverse().map(o=>`<p><b>${esc(o.id)}</b> — ${esc(o.name)} — ${db.settings.currency}${o.total.toLocaleString()} — ${esc(o.status)}</p>`).join("")||"<p class='small'>No orders yet.</p>";renderProducts();renderOrders();renderReviews();renderCustomers();renderCategories();renderCoupons();renderShop();shopName.value=db.settings.shopName;deliveryCharge.value=db.settings.delivery;currency.value=db.settings.currency==="LKR "?"LKR":"₹ INR";populateCategories()}
+save();
+</script>
+
+<!--
+MADHAN SHOP PRODUCTION HANDOFF
+1. Replace localStorage with a hosted database/API.
+2. Move admin authentication to a server-side auth system; never keep credentials in HTML/JS.
+3. Store product images in object storage and save URLs in the database.
+4. Add server-side order creation, stock locking, validation, and status updates.
+5. Add HTTPS, rate limiting, input validation, CSRF protection, and secure sessions.
+6. Add real payment provider only after merchant credentials and webhook verification are configured.
+7. Configure a custom domain and production hosting.
+-->
+</body>
+</html>
